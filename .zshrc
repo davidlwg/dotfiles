@@ -109,3 +109,14 @@ export NVM_DIR="$HOME/.nvm"
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
 
+function gcm() {
+  git commit -m "$*"
+}
+
+function gco() {
+  git checkout "$*" 
+}
+
+alias ga="git add ."
+alias gp="git push"
+

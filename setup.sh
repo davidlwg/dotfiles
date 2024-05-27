@@ -42,6 +42,14 @@ else
 fi
 
 # Install fzf if not installed
+if ! brew list | grep -q "^lazygit\$"; then
+  echo "Installing lazygit..."
+  brew install lazygit
+else
+  echo "lazygit is already installed."
+fi
+
+# Install fzf if not installed
 if ! brew list | grep -q "^fzf\$"; then
   echo "Installing fzf..."
   brew install fzf
