@@ -1,7 +1,7 @@
 #!/bin/bash
 
-cp -r ~/.config/nvim ./.config 
-cp -r ~/.config/kitty ./.config
+cp -r ~/.config/nvim ./config 
+cp -r ~/.config/kitty ./config
 cp -r ~/.zshrc .
 
 git add .
