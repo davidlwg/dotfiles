@@ -1,7 +1,8 @@
 #!/bin/bash
 
-cp -r ~/.config/nvim . 
-cp -r ~/.config/kitty .
+cp -r ~/.config/nvim ./.config 
+cp -r ~/.config/kitty ./.config
+cp -r ~/.zshrc .
 
 git add .
 git commit -m "Backup on $(date)"
