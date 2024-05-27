@@ -1,7 +1,7 @@
 #!/bin/bash
 
-cp -r ./.config/nvim/ ~/.config/nvim/
-cp -r ./.config/kitty/ ~/.config/kitty/
+cp -r ./config/nvim/ ~/.config/nvim/
+cp -r ./config/kitty/ ~/.config/kitty/
 cp -r ./.zshrc ~/.zshrc
 
 # Function to check if a command exists
