@@ -109,14 +109,12 @@ export NVM_DIR="$HOME/.nvm"
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
 
-function gcm() {
-  git commit -m "$*"
-}
-
-function gco() {
-  git checkout "$*" 
-}
-
-alias ga="git add ."
-alias gp="git push"
-
+# Github Aliases
+alias ga='git add'
+alias gp='git push'
+alias gcm='git commit -m'
+alias gcma='git commit -am'
+alias gb='git branch'
+alias gco='git checkout'
+alias gp='git pull'
+alias gc='git clone'
