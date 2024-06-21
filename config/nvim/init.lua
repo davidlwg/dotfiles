@@ -166,7 +166,7 @@ vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
-vim.keymap.set('n', '<leader>dq', vim.diagnostic.setqflist, { desc = 'Add all diagnostic to Quickfix list' })
+vim.keymap.set('n', '<leader>dq', vim.diagnostic.setqflist, { desc = 'Add all [D]iagnostic to [Q]uickfix list' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -205,10 +205,22 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
-vim.o.timeoutlen = 500
-
 -- Map 'jk' to <Esc> in insert mode
 vim.api.nvim_set_keymap('i', 'jk', '<Esc>', { noremap = true, silent = true })
+
+-- Bind <leader>e to replace the current line with the echo command
+function ReplaceWithEcho()
+  -- Get the current line content
+  local line_content = vim.api.nvim_get_current_line()
+  -- Capture the leading whitespace
+  local leading_whitespace = string.match(line_content, '^%s*')
+  -- Format the line to create the echo command with the leading whitespace
+  local new_line = leading_whitespace .. 'echo "' .. vim.trim(line_content) .. '" >> .env'
+  -- Set the new line content
+  vim.api.nvim_set_current_line(new_line)
+end
+
+vim.api.nvim_set_keymap('n', 're', ':lua ReplaceWithEcho()<CR>', { noremap = true, silent = true })
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
@@ -231,6 +243,38 @@ vim.opt.rtp:prepend(lazypath)
 --
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
+  -- {
+  --   'zbirenbaum/copilot.lua',
+  --   cmd = 'Copilot',
+  --   event = 'InsertEnter',
+  --   opts = {
+  --     suggestion = { enabled = false },
+  --     panel = { enabled = false },
+  --     filetypes = {
+  --       markdown = true,
+  --       help = true,
+  --     },
+  --   },
+  -- },
+  {
+    'glacambre/firenvim',
+
+    -- Lazy load firenvim
+    -- Explanation: https://github.com/folke/lazy.nvim/discussions/463#discussioncomment-4819297
+    lazy = not vim.g.started_by_firenvim,
+    build = function()
+      vim.fn['firenvim#install'](0)
+    end,
+  },
+  {
+    'github/copilot.vim',
+    config = function()
+      -- Example configuration
+      vim.g.copilot_no_tab_map = true
+      vim.api.nvim_set_keymap('i', '<C-J>', 'copilot#Accept("<CR>")', { silent = true, expr = true })
+    end,
+  },
+
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
@@ -582,7 +626,7 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
-        -- tsserver = {},
+        tsserver = {},
         --
 
         lua_ls = {

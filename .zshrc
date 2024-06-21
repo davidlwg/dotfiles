@@ -116,5 +116,10 @@ alias gcm='git commit -m'
 alias gcma='git commit -am'
 alias gb='git branch'
 alias gco='git checkout'
-alias gp='git pull'
+alias gpl='git pull'
 alias gc='git clone'
+
+alias lz='lazygit'
+
+export PATH=$PATH:$HOME/go/bin
+
