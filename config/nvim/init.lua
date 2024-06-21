@@ -208,19 +208,19 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 -- Map 'jk' to <Esc> in insert mode
 vim.api.nvim_set_keymap('i', 'jk', '<Esc>', { noremap = true, silent = true })
 
--- Bind <leader>e to replace the current line with the echo command
-function ReplaceWithEcho()
-  -- Get the current line content
-  local line_content = vim.api.nvim_get_current_line()
-  -- Capture the leading whitespace
-  local leading_whitespace = string.match(line_content, '^%s*')
-  -- Format the line to create the echo command with the leading whitespace
-  local new_line = leading_whitespace .. 'echo "' .. vim.trim(line_content) .. '" >> .env'
-  -- Set the new line content
-  vim.api.nvim_set_current_line(new_line)
-end
-
-vim.api.nvim_set_keymap('n', 're', ':lua ReplaceWithEcho()<CR>', { noremap = true, silent = true })
+-- Bind re to replace the current line with the echo command
+-- function ReplaceWithEcho()
+--   -- Get the current line content
+--   local line_content = vim.api.nvim_get_current_line()
+--   -- Capture the leading whitespace
+--   local leading_whitespace = string.match(line_content, '^%s*')
+--   -- Format the line to create the echo command with the leading whitespace
+--   local new_line = leading_whitespace .. 'echo "' .. vim.trim(line_content) .. '" >> .env'
+--   -- Set the new line content
+--   vim.api.nvim_set_current_line(new_line)
+-- end
+--
+-- vim.api.nvim_set_keymap('n', 're', ':lua ReplaceWithEcho()<CR>', { noremap = true, silent = true })
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
