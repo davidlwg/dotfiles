@@ -4,6 +4,9 @@ git pull
 
 cp -r ~/.config/nvim ./config 
 cp -r ~/.config/kitty ./config
+cp -r ~/.config/yabai./config
+cp -r ~/.config/skhd ./config
+cp -r ~/.config/borders ./config
 cp -r ~/.zshrc .
 
 git add .
