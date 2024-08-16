@@ -111,15 +111,18 @@ source <(fzf --zsh)
 
 # Github Aliases
 alias ga='git add'
-alias gp='git push'
+alias gpush='git push'
 alias gcm='git commit -m'
 alias gcma='git commit -am'
 alias gb='git branch'
 alias gco='git checkout'
-alias gpl='git pull'
+alias gpull='git pull'
 alias gc='git clone'
 
 alias lz='lazygit'
 
 export PATH=$PATH:$HOME/go/bin
 
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"

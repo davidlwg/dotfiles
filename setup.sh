@@ -2,6 +2,9 @@
 
 cp -r ./config/nvim/ ~/.config/nvim/
 cp -r ./config/kitty/ ~/.config/kitty/
+cp -r ./config/yabai/ ~/.config/yabai/
+cp -r ./config/skhd/ ~/.config/skhd/
+cp -r ./config/borders/ ~/.config/borders/
 cp -r ./.zshrc ~/.zshrc
 
 # Function to check if a command exists
@@ -63,6 +66,35 @@ if ! oh_my_zsh_installed; then
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 else
   echo "Oh My Zsh is already installed."
+fi
+
+# Install yabai if not installed
+if ! command_exists yabai; then
+  echo "Yabai not found. Installing yabai..."
+  brew install koekeishiya/formulae/yabai
+  yabai --start-service
+else
+  echo "Yabai is already installed."
+  yabai --restart-service
+fi
+
+# Install skhd if not installed
+if ! command_exists skhd; then
+  echo "skhd not found. Installing skhd..."
+  brew install koekeishiya/formulae/skhd
+  skhd --start-service
+else
+  echo "skhd is already installed."
+  skhd --restart-service
+fi
+
+# Install borders if not installed
+if ! command_exists borders; then
+  echo "borders not found. Installing borders..."
+  brew tap FelixKratz/formulae
+  brew install borders
+else
+  echo "borders is already installed."
 fi
 
 echo "All installations and checks are complete."
