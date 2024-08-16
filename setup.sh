@@ -1,5 +1,7 @@
 #!/bin/bash
 
+git pull
+
 cp -r ./config/nvim/ ~/.config/nvim/
 cp -r ./config/kitty/ ~/.config/kitty/
 cp -r ./.zshrc ~/.zshrc
