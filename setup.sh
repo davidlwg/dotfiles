@@ -2,6 +2,12 @@
 
 git pull
 
+mkdir -p ~/.config/nvim/
+mkdir -p ~/.config/kitty/
+mkdir -p ~/.config/yabai/
+mkdir -p ~/.config/skhd/
+mkdir -p ~/.config/borders/
+
 cp -r ./config/nvim/ ~/.config/nvim/
 cp -r ./config/kitty/ ~/.config/kitty/
 cp -r ./config/yabai/ ~/.config/yabai/
