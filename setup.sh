@@ -37,15 +37,15 @@ fi
 brew update
 
 # Tap the cask fonts repository if not already tapped
-if ! brew tap | grep -q "^homebrew/cask-fonts\$"; then
-  echo "Tapping homebrew/cask-fonts..."
-  brew tap homebrew/cask-fonts
-else
-  echo "homebrew/cask-fonts is already tapped."
-fi
+# if ! brew tap | grep "^homebrew/cask-fonts\$" > /dev/null; then
+#   echo "Tapping homebrew/cask-fonts..."
+#   brew tap homebrew/cask-fonts
+# else
+#   echo "homebrew/cask-fonts is already tapped."
+# fi
 
 # Install font-jetbrains-mono-nerd-font if not installed
-if ! brew list --cask | grep -q "^font-jetbrains-mono-nerd-font\$"; then
+if ! brew list --cask | grep "^font-jetbrains-mono-nerd-font\$" > /dev/null; then
   echo "Installing font-jetbrains-mono-nerd-font..."
   brew install --cask font-jetbrains-mono-nerd-font
 else
@@ -53,7 +53,7 @@ else
 fi
 
 # Install fzf if not installed
-if ! brew list | grep -q "^lazygit\$"; then
+if ! brew list | grep "^lazygit\$" > /dev/null; then
   echo "Installing lazygit..."
   brew install lazygit
 else
@@ -61,7 +61,7 @@ else
 fi
 
 # Install fzf if not installed
-if ! brew list | grep -q "^fzf\$"; then
+if ! brew list | grep "^fzf\$" > /dev/null; then
   echo "Installing fzf..."
   brew install fzf
 else
