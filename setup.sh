@@ -34,7 +34,7 @@ else
 fi
 
 # Update Homebrew to ensure we have the latest information
-brew update
+# brew update
 
 # Tap the cask fonts repository if not already tapped
 # if ! brew tap | grep "^homebrew/cask-fonts\$" > /dev/null; then
