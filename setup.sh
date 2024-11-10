@@ -10,6 +10,7 @@ cp -r ./config/nvim/ ~/.config/nvim/
 cp -r ./config/kitty/ ~/.config/kitty/
 cp -r ./config/borders/ ~/.config/borders/
 cp -r ./.zshrc ~/.zshrc
+cp -r ./.aerospace.toml ~/.aerospace.toml
 
 # Function to check if a command exists
 command_exists() {
@@ -79,6 +80,14 @@ if ! command_exists borders; then
   brew install borders
 else
   echo "borders is already installed."
+fi
+
+# Install borders if not installed
+if ! command_exists aerospace; then
+  echo "aerospace not found. Installing aerospace..."
+  brew install --cask nikitabobko/tap/aerospace
+else
+  echo "aerospace is already installed."
 fi
 
 echo "All installations and checks are complete."

@@ -5,6 +5,7 @@ git pull
 cp -r ~/.config/nvim ./config 
 cp -r ~/.config/kitty ./config
 cp -r ~/.config/borders ./config
+cp -r ~/.aerospace.toml .
 cp -r ~/.zshrc .
 
 git add .
