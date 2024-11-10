@@ -165,7 +165,7 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+vim.keymap.set('n', '<leader>qq', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 vim.keymap.set('n', '<leader>dq', vim.diagnostic.setqflist, { desc = 'Add all [D]iagnostic to [Q]uickfix list' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
@@ -207,6 +207,9 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 -- Map 'jk' to <Esc> in insert mode
 vim.api.nvim_set_keymap('i', 'jk', '<Esc>', { noremap = true, silent = true })
+--
+-- Add a keymap for LSP references
+vim.keymap.set('n', '<leader>qr', vim.lsp.buf.references, { desc = 'Show [R]eferences', noremap = true, silent = true })
 
 -- Bind re to replace the current line with the echo command
 -- function ReplaceWithEcho()
@@ -230,6 +233,80 @@ if not vim.loop.fs_stat(lazypath) then
   vim.fn.system { 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyrepo, lazypath }
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
+
+-- Search for highlighted text and send to buffer
+function SearchAndSendToBuffer()
+  -- Yank the visually selected text
+  vim.cmd 'normal! gv"xy'
+
+  -- Get the yanked text from the default register
+  local yanked_text = vim.fn.getreg 'x'
+
+  -- Run the grep command with the yanked text
+  vim.cmd('grep ' .. yanked_text)
+
+  -- Open the Quickfix list
+  vim.cmd 'copen'
+end
+
+-- Map a key to trigger this function (for example, <leader>g)
+vim.api.nvim_set_keymap('v', '<leader>sf', ':lua SearchAndSendToBuffer()<CR>', { noremap = true, silent = true })
+
+-- Copy Github link
+local function get_github_link()
+  local relative_path = vim.fn.fnamemodify(vim.fn.expand '%', ':.')
+
+  local line_number = vim.fn.line '.'
+
+  local function get_repo_details()
+    local git_config = vim.fn.systemlist('git config --get remote.origin.url')[1]
+    if not git_config then
+      print 'Not a GitHub repository or no remote.origin.url found'
+      return nil
+    end
+
+    -- Extract the owner and repo name from the URL
+    local owner, repo = git_config:match 'github.com[:/]([^/]+)/([^/]+)%.git'
+    if not owner or not repo then
+      print 'Failed to parse GitHub repository details'
+      return nil
+    end
+
+    return owner, repo
+  end
+
+  local function get_commit_hash()
+    local commit_hash = vim.fn.systemlist('git rev-parse HEAD')[1]
+    if not commit_hash then
+      print 'Failed to get the current commit hash'
+      return nil
+    end
+
+    return commit_hash
+  end
+
+  local owner, repo = get_repo_details()
+  if not owner or not repo then
+    return
+  end
+
+  local commit_hash = get_commit_hash()
+  if not commit_hash then
+    return
+  end
+
+  local github_url = string.format('https://github.com/%s/%s/blob/%s/%s#L%d', owner, repo, commit_hash, relative_path, line_number)
+
+  vim.fn.setreg('+', github_url)
+  print('GitHub link copied to clipboard: ' .. github_url)
+end
+
+vim.keymap.set('n', '<Leader>gh', '', {
+  noremap = true,
+  silent = true,
+  callback = get_github_link,
+  desc = 'Get a permanent GitHub link for the current line',
+})
 
 -- [[ Configure and install plugins ]]
 --
@@ -675,6 +752,7 @@ require('lazy').setup({
           settings = {
             pylsp = {
               plugins = {
+                rope_completion = { enabled = true },
                 pycodestyle = { enabled = false },
                 flake8 = { enabled = true },
                 black = { enabled = true },
@@ -690,7 +768,7 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
-        tsserver = {},
+        ts_ls = {},
         --
 
         lua_ls = {
@@ -730,6 +808,11 @@ require('lazy').setup({
       require('mason-lspconfig').setup {
         handlers = {
           function(server_name)
+            -- https://github.com/neovim/nvim-lspconfig/pull/3232
+            -- if server_name == 'tsserver' then
+            --   server_name = 'ts_ls'
+            -- end
+
             local server = servers[server_name] or {}
             -- This handles overriding only values explicitly passed
             -- by the server configuration above. Useful when disabling
@@ -1014,7 +1097,7 @@ require('lazy').setup({
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
