@@ -748,19 +748,19 @@ require('lazy').setup({
       local servers = {
         -- clangd = {},
         gopls = {},
-        pylsp = {
-          settings = {
-            pylsp = {
-              plugins = {
-                rope_completion = { enabled = true },
-                pycodestyle = { enabled = false },
-                flake8 = { enabled = true },
-                black = { enabled = true },
-              },
-            },
-          },
-        },
-        -- pyright = {},
+        -- pylsp = {
+        --   settings = {
+        --     pylsp = {
+        --       plugins = {
+        --         rope_completion = { enabled = true },
+        --         pycodestyle = { enabled = false },
+        --         flake8 = { enabled = true },
+        --         black = { enabled = true },
+        --       },
+        --     },
+        --   },
+        -- },
+        pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -768,7 +768,7 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
-        ts_ls = {},
+        -- ts_ls = {},
         --
 
         lua_ls = {
@@ -800,8 +800,8 @@ require('lazy').setup({
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
-        'black', -- Used to format Python code
-        'flake8', -- Used to lint Python codeinit
+        -- 'black', -- Used to format Python code
+        -- 'flake8', -- Used to lint Python codeinit
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -851,17 +851,17 @@ require('lazy').setup({
         }
       end,
       formatters = {
-        black = {
-          command = 'black',
-          args = { '-l', '120', '-' },
-          stdin = true,
-        },
+        -- black = {
+        --   command = 'black',
+        --   args = { '-l', '120', '-' },
+        --   stdin = true,
+        -- },
       },
       formatters_by_ft = {
         lua = { 'stylua' },
         javascript = { 'prettier' },
         typescript = { 'prettier' },
-        python = { 'black' },
+        -- python = { 'black' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
